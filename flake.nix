@@ -14,6 +14,7 @@
       system:
       let
         pkgs = import nixpkgs { inherit system; };
+        kcov = if pkgs.stdenv.isLinux then pkgs.kcov else null;
       in
       {
         packages.default = pkgs.stdenv.mkDerivation {
@@ -28,6 +29,7 @@
         devShells.default = pkgs.mkShell {
           packages = [
             pkgs.git # https://github.com/git/git
+            kcov # https://github.com/SimonKagstrom/kcov
             pkgs.zig # https://github.com/ziglang/zig
           ];
         };

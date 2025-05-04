@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Test coverage
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  test:
+    name: Report
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+      - name: Install a flaked Nix
+        uses: DeterminateSystems/nix-installer-action@v17
+      - name: Run tests
+        run: |
+          nix develop -c zig build test -Dcoverage
+      - name: Upload reports
+        uses: codecov/codecov-action@v5.4.2
+        with:
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true
