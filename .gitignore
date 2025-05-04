@@ -1,0 +1,6 @@
+# Development
+.direnv
+.zig-cache
+
+# Build
+zig-out
