@@ -29,6 +29,7 @@
         devShells.default = pkgs.mkShell {
           packages = [
             pkgs.git # https://github.com/git/git
+            pkgs.goreleaser # https://github.com/goreleaser/goreleaser
             kcov # https://github.com/SimonKagstrom/kcov
             pkgs.zig # https://github.com/ziglang/zig
           ];
