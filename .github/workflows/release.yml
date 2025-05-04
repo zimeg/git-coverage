@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Tag release
 on:
+  pull_request:
   push:
     tags:
       - "v*"
@@ -20,7 +21,7 @@ jobs:
       - name: Publish artifacts
         uses: goreleaser/goreleaser-action@v6.3.0
         with:
-          args: release --clean
+          args: release --clean --snapshot
           distribution: goreleaser
           version: "v2.9.0"
         env:
