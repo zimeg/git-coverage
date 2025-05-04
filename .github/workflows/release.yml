@@ -20,6 +20,6 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@v17
       - name: Publish artifacts
         run: |
-          nix develop --command bash -c "GITHUB_TOKEN=$GITHUB_TOKEN goreleaser release --clean --snapshot"
+          nix develop -c goreleaser release --clean --snapshot
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
