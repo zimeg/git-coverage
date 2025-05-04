@@ -11,6 +11,7 @@ to [Semantic Versioning][semver].
 
 - Upload reports of test coverage to Codecov to complete proofs of concept.
 - Save compilations for various machines to releases when tags are created.
+- Include token permissions needed to create artifact content of a release.
 
 ## [0.1.0] - 2025-05-03
 
