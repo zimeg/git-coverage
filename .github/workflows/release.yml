@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Tag release
 on:
+  pull_request:
   push:
     tags:
       - "v*"
@@ -20,6 +21,6 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@v17
       - name: Publish artifacts
         run: |
-          nix develop -c goreleaser release --clean
+          nix develop -c goreleaser release --clean --snapshot
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
