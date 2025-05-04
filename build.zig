@@ -23,9 +23,18 @@ pub fn build(b: *std.Build) void {
     run_step.dependOn(&run_cmd.step);
 
     const test_step = b.step("test", "Run unit tests");
+    const coverage = b.option(bool, "coverage", "Generate coverage") orelse false;
     const exe_unit_tests = b.addTest(.{
         .root_module = exe_mod,
     });
+    if (coverage) {
+        exe_unit_tests.setExecCmd(&[_]?[]const u8{
+            "kcov",
+            "--exclude-pattern=/nix/store",
+            "kcov-output",
+            null,
+        });
+    }
     const run_exe_unit_tests = b.addRunArtifact(exe_unit_tests);
     test_step.dependOn(&run_exe_unit_tests.step);
 }

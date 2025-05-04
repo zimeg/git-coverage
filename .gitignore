@@ -4,3 +4,6 @@
 
 # Build
 zig-out
+
+# Test
+kcov-output
