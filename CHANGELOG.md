@@ -10,6 +10,7 @@ to [Semantic Versioning][semver].
 ### Maintenance
 
 - Upload reports of test coverage to Codecov to complete proofs of concept.
+- Save compilations for various machines to releases when tags are created.
 
 ## [0.1.0] - 2025-05-03
 

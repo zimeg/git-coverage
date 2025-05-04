@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Tag release
+on:
+  push:
+    tags:
+      - "v*"
+jobs:
+  release:
+    name: Upload
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 0
+      - name: Install a flaked Nix
+        uses: DeterminateSystems/nix-installer-action@v17
+      - name: Publish artifacts
+        run: |
+          nix develop -c goreleaser release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

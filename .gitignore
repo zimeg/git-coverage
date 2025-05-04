@@ -3,6 +3,7 @@
 .zig-cache
 
 # Build
+dist
 zig-out
 
 # Test
