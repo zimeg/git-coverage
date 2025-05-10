@@ -19,7 +19,7 @@ pub fn main() !void {
         .allocator = allocator,
         .argv = &[_][]const u8{ "open", url },
     }) catch {
-        try std.io.getStdOut().writer().print("{s}\n", .{ url });
+        try std.io.getStdOut().writer().print("{s}\n", .{url});
     };
 }
 
@@ -29,7 +29,7 @@ fn origin(remotes: []const u8) ![]const u8 {
         const line = remote.next();
         if (line) |val| {
             if (std.mem.startsWith(u8, val, "origin") and std.mem.endsWith(u8, val, "(push)")) {
-                return std.mem.trim(u8, val[7..val.len-6], " ");
+                return std.mem.trim(u8, val[7 .. val.len - 6], " ");
             }
         } else {
             return error.GitOriginMissing;
@@ -51,10 +51,10 @@ test "origin ssh" {
 
 fn repo(remote: []const u8) ![]const u8 {
     if (std.mem.startsWith(u8, remote, "https://github.com/")) {
-        return remote[19..remote.len-4];
+        return remote[19 .. remote.len - 4];
     }
     if (std.mem.startsWith(u8, remote, "git@github.com:")) {
-        return remote[15..remote.len-4];
+        return remote[15 .. remote.len - 4];
     }
     return error.GitProtocolMissing;
 }
@@ -75,7 +75,7 @@ fn coverage(allocator: std.mem.Allocator, project: []const u8) ![]const u8 {
     return std.fmt.allocPrint(
         allocator,
         "https://app.codecov.io/gh/{s}",
-        .{ project },
+        .{project},
     );
 }
 
