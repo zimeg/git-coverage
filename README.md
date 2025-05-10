@@ -32,5 +32,9 @@ $ mandb
 $ man git-coverage
 ```
 
+## Details
+
+This project is licensed under the MIT license and is not affiliated with or endorsed by Codecov.
+
 [codecov]: https://about.codecov.io
 [releases]: https://github.com/zimeg/git-coverage/releases/latest
