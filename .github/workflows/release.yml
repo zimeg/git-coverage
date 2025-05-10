@@ -23,3 +23,10 @@ jobs:
           nix develop -c goreleaser release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Include documentation
+        run: |
+          TAG="${{ github.ref_name }}"
+          VERSION="${TAG#v}"
+          gh release upload "$TAG" man/git-coverage.1#git-coverage_"$VERSION"_man.1
+        env:
+          GH_TOKEN: ${{ github.token }}

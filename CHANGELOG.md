@@ -10,6 +10,7 @@ to [Semantic Versioning][semver].
 ### Added
 
 - Print usage details to standard output if a help flag is used in command.
+- Document more detailed usage with manual pages for even better reference.
 
 ### Maintenance
 
