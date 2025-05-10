@@ -1,10 +1,49 @@
 const std = @import("std");
 
+const Flags = struct {
+    help: bool,
+
+    pub fn init(allocator: std.mem.Allocator) !Flags {
+        var flags = Flags{
+            .help = false,
+        };
+        var args = try std.process.argsWithAllocator(allocator);
+        _ = args.next();
+        while (true) {
+            const opt = args.next();
+            if (opt) |arg| {
+                if (std.mem.eql(u8, arg, "-h") or std.mem.eql(u8, arg, "--help")) {
+                    flags.help = true;
+                    break;
+                } else {
+                    return error.FlagOptionMissing;
+                }
+            } else {
+                break;
+            }
+        }
+        return flags;
+    }
+};
+
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     var aa = std.heap.ArenaAllocator.init(gpa.allocator());
     defer aa.deinit();
     const allocator = aa.allocator();
+    const writer = std.io.getStdOut().writer();
+    const flags = try Flags.init(allocator);
+    if (flags.help) {
+        try writer.print(
+            \\usage: git coverage [options]
+            \\
+            \\Open test coverage uploaded to codecov in a web browser.
+            \\
+            \\    --help    boolean  print these usage details (default: false)
+            \\
+        , .{});
+        return;
+    }
     const proc = try std.process.Child.run(.{
         .allocator = allocator,
         .argv = &.{ "git", "remote", "-v" },
@@ -19,7 +58,7 @@ pub fn main() !void {
         .allocator = allocator,
         .argv = &[_][]const u8{ "open", url },
     }) catch {
-        try std.io.getStdOut().writer().print("{s}\n", .{url});
+        try writer.print("{s}\n", .{url});
     };
 }
 
