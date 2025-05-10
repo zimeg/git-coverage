@@ -26,7 +26,7 @@ jobs:
       - name: Include documentation
         run: |
           TAG="${{ github.ref_name }}"
-          TAG="${TAG#v}"
-          gh release upload "$TAG" man/git-coverage.1#git-coverage_"$TAG"_man.1
+          VERSION="${TAG#v}"
+          gh release upload "$TAG" man/git-coverage.1#git-coverage_"$VERSION"_man.1
         env:
           GH_TOKEN: ${{ github.token }}
