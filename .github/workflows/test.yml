@@ -14,6 +14,7 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@v17
       - name: Run tests
         run: |
+          shopt -s globstar
           nix develop -c zig fmt --check ./src/**/*.zig
           nix develop -c zig build test -Dcoverage
       - name: Upload reports
