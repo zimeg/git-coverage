@@ -14,6 +14,7 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@v17
       - name: Run tests
         run: |
+          nix develop -c zig fmt --check ./src/**/*.zig
           nix develop -c zig build test -Dcoverage
       - name: Upload reports
         uses: codecov/codecov-action@v5.4.2
