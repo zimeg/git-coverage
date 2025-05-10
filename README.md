@@ -21,13 +21,13 @@ Options are available for customization:
 Add a [build][releases] to `$PATH` for automatic detection:
 
 ```sh
-$ cp ./path/to/git-coverage /usr/local/bin/
+$ mv ./path/to/git-coverage /usr/local/bin/
 ```
 
 Read manual pages:
 
 ```sh
-$ cp ./man/git-coverage.1 /usr/local/share/man/man1/
+$ mv ./man/git-coverage.1 /usr/local/share/man/man1/
 $ mandb
 $ man git-coverage
 ```
