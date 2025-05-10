@@ -1,0 +1,51 @@
+.TH GIT-COVERAGE "1" "2025-05-10" "git-coverage 0.1.0" "Git Manual"
+.
+.SH NAME
+git-coverage \- Open test coverage uploaded to \fBcodecov\fP in a web browser.
+.
+.
+.SH SYNOPSIS
+.B
+git coverage [\fIoptions\fP]
+.
+.
+.SH DESCRIPTION
+The \fBgit-coverage\fP program opens test coverage results uploaded to \fBcodecov\fP using \fIgit-remote\fP(1) details.
+.
+.
+.SH OPTIONS
+.
+.IP "-h, --help"
+Print these usage details.
+.
+.
+.SH EXIT STATUS
+An exit code of \fB0\fP is returned if a link to coverage results on \fBcodecov\fP can be constructed.
+.sp 2
+If the browser cannot be opened a link to coverage results is output to \fBstdout\fP before exiting.
+.sp 2
+Errors in \fIgit\fP(1) configurations or provided flag \fIoptions\fP exits with a non-zero error code.
+.
+.
+.SH STANDARDS
+The latest release of \fBgit\fP is recommended.
+.
+.
+.SH HISTORY
+\fIhttps://github.com/zimeg/git-coverage/releases/\fP
+.
+.
+.SH EXAMPLES
+.
+.IP "$ git coverage"
+Open test coverage results for the current project in a web browser.
+.
+.
+.SH REPORTING BUGS
+\fIhttps://github.com/zimeg/git-coverage/issues/\fP
+.
+.
+.SH SEE ALSO
+\fIgit-remote\fP(1)
+.nf
+\fIhttps://about.codecov.io/\fP

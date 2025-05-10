@@ -20,4 +20,12 @@ Options are available for customization:
 
 Add a build to `$PATH` for automatic detection.
 
+Read manual pages:
+
+```sh
+$ cp ./man/git-coverage.1 /usr/local/share/man/man1/
+$ mandb
+$ man git-coverage
+```
+
 [codecov]: https://about.codecov.io
