@@ -7,6 +7,10 @@ to [Semantic Versioning][semver].
 
 ## [Unreleased]
 
+### Added
+
+- Print usage details to standard output if a help flag is used in command.
+
 ### Maintenance
 
 - Confirm code formatting matches the standard expectations about language.
