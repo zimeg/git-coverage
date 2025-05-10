@@ -18,14 +18,19 @@ Options are available for customization:
 
 ## Installation
 
-Add a build to `$PATH` for automatic detection.
+Add a [build][releases] to `$PATH` for automatic detection:
+
+```sh
+$ mv ./path/to/git-coverage /usr/local/bin/
+```
 
 Read manual pages:
 
 ```sh
-$ cp ./man/git-coverage.1 /usr/local/share/man/man1/
+$ mv ./man/git-coverage.1 /usr/local/share/man/man1/
 $ mandb
 $ man git-coverage
 ```
 
 [codecov]: https://about.codecov.io
+[releases]: https://github.com/zimeg/git-coverage/releases/latest
