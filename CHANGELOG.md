@@ -16,6 +16,7 @@ to [Semantic Versioning][semver].
 ### Maintenance
 
 - Confirm code formatting matches the standard expectations about language.
+- Include legalese around licensing and unsponsored developments otherwise.
 
 ## [0.1.1] - 2025-05-03
 
