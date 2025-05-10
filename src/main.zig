@@ -12,7 +12,7 @@ const Flags = struct {
         while (true) {
             const opt = args.next();
             if (opt) |arg| {
-                if (std.mem.eql(u8, arg, "--help")) {
+                if (std.mem.eql(u8, arg, "-h") or std.mem.eql(u8, arg, "--help")) {
                     flags.help = true;
                     break;
                 } else {
