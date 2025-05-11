@@ -12,6 +12,7 @@ to [Semantic Versioning][semver].
 - Print usage details to standard output if a help flag is used in command.
 - Document more detailed usage with manual pages for even better reference.
 - Include installation instruction for moving a release download into path.
+- Pick an upstream project according to the saved git remotes using a flag.
 
 ### Maintenance
 

@@ -2,10 +2,12 @@ const std = @import("std");
 
 const Flags = struct {
     help: bool,
+    remote: []const u8,
 
     pub fn init(allocator: std.mem.Allocator) !Flags {
         var flags = Flags{
             .help = false,
+            .remote = "origin",
         };
         var args = try std.process.argsWithAllocator(allocator);
         _ = args.next();
@@ -15,6 +17,8 @@ const Flags = struct {
                 if (std.mem.eql(u8, arg, "-h") or std.mem.eql(u8, arg, "--help")) {
                     flags.help = true;
                     break;
+                } else if (std.mem.eql(u8, arg, "--remote")) {
+                    flags.remote = try parse(&args);
                 } else {
                     return error.FlagOptionMissing;
                 }
@@ -23,6 +27,15 @@ const Flags = struct {
             }
         }
         return flags;
+    }
+
+    fn parse(args: *std.process.ArgIterator) ![]const u8 {
+        const path = args.next();
+        if (path) |value| {
+            return value;
+        } else {
+            return error.FlagValueMissing;
+        }
     }
 };
 
@@ -40,6 +53,7 @@ pub fn main() !void {
             \\Open test coverage uploaded to codecov in a web browser.
             \\
             \\    --help    boolean  print these usage details (default: false)
+            \\    --remote  string   pick an upstream project  (default: "origin")
             \\
         , .{});
         return;
@@ -51,7 +65,7 @@ pub fn main() !void {
     if (proc.stdout.len <= 0) {
         return error.GitRemoteMissing;
     }
-    const remote = try origin(proc.stdout);
+    const remote = try origin(proc.stdout, flags.remote);
     const project = try repo(remote);
     const url = try coverage(allocator, project);
     _ = std.process.Child.run(.{
@@ -62,13 +76,13 @@ pub fn main() !void {
     };
 }
 
-fn origin(remotes: []const u8) ![]const u8 {
+fn origin(remotes: []const u8, upstream: []const u8) ![]const u8 {
     var remote = std.mem.splitScalar(u8, remotes, '\n');
     while (true) {
         const line = remote.next();
         if (line) |val| {
-            if (std.mem.startsWith(u8, val, "origin") and std.mem.endsWith(u8, val, "(push)")) {
-                return std.mem.trim(u8, val[7 .. val.len - 6], " ");
+            if (std.mem.startsWith(u8, val, upstream) and std.mem.endsWith(u8, val, "(push)")) {
+                return std.mem.trim(u8, val[upstream.len + 1 .. val.len - 6], " ");
             }
         } else {
             return error.GitOriginMissing;
@@ -76,16 +90,52 @@ fn origin(remotes: []const u8) ![]const u8 {
     }
 }
 
-test "origin http" {
-    const remotes = "origin  https://github.com/zimeg/git-coverage.git (fetch)\norigin  https://github.com/zimeg/git-coverage.git (push)";
-    const remote = try origin(remotes);
+test "origin http default" {
+    const remotes =
+        \\origin    https://github.com/example/git-coverage.git (fetch)
+        \\origin    https://github.com/example/git-coverage.git (push)
+        \\upstream  https://github.com/zimeg/git-coverage.git (fetch)
+        \\upstream  https://github.com/zimeg/git-coverage.git (push)
+        \\
+    ;
+    const remote = try origin(remotes, "origin");
+    try std.testing.expectEqualStrings(remote, "https://github.com/example/git-coverage.git");
+}
+
+test "origin http custom" {
+    const remotes =
+        \\origin    https://github.com/example/git-coverage.git (fetch)
+        \\origin    https://github.com/example/git-coverage.git (push)
+        \\upstream  https://github.com/zimeg/git-coverage.git (fetch)
+        \\upstream  https://github.com/zimeg/git-coverage.git (push)
+        \\
+    ;
+    const remote = try origin(remotes, "upstream");
     try std.testing.expectEqualStrings(remote, "https://github.com/zimeg/git-coverage.git");
 }
 
-test "origin ssh" {
-    const remotes = "origin  git@github.com:zimeg/git-coverage.git (fetch)\norigin  git@github.com:zimeg/git-coverage.git (push)";
-    const remote = try origin(remotes);
+test "origin ssh default" {
+    const remotes =
+        \\fork    git@github.com:example/git-coverage.git (fetch)
+        \\fork    git@github.com:example/git-coverage.git (push)
+        \\origin  git@github.com:zimeg/git-coverage.git (fetch)
+        \\origin  git@github.com:zimeg/git-coverage.git (push)
+        \\
+    ;
+    const remote = try origin(remotes, "origin");
     try std.testing.expectEqualStrings(remote, "git@github.com:zimeg/git-coverage.git");
+}
+
+test "origin ssh custom" {
+    const remotes =
+        \\fork    git@github.com:example/git-coverage.git (fetch)
+        \\fork    git@github.com:example/git-coverage.git (push)
+        \\origin  git@github.com:zimeg/git-coverage.git (fetch)
+        \\origin  git@github.com:zimeg/git-coverage.git (push)
+        \\
+    ;
+    const remote = try origin(remotes, "fork");
+    try std.testing.expectEqualStrings(remote, "git@github.com:example/git-coverage.git");
 }
 
 fn repo(remote: []const u8) ![]const u8 {
