@@ -15,6 +15,7 @@ $ git coverage  # https://app.codecov.io/gh/zimeg/git-coverage
 Options are available for customization:
 
 - `--help`: boolean. Print these usage details. Default: `false`
+- `--branch`: string. Fetch changes to inspect. Default: `main`
 - `--remote`: string. Pick an upstream project. Default: `origin`
 
 ## Installation
