@@ -13,6 +13,7 @@ to [Semantic Versioning][semver].
 - Document more detailed usage with manual pages for even better reference.
 - Include installation instruction for moving a release download into path.
 - Pick an upstream project according to the saved git remotes using a flag.
+- Fetch the changes of a branch when showing coverage with a specific flag.
 
 ### Maintenance
 
