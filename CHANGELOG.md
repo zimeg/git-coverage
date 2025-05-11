@@ -11,6 +11,7 @@ to [Semantic Versioning][semver].
 
 - Limit the permission set to the minimum required for all action workflow.
 - Update dependencies of workflows whenever possible on repeated schedules.
+- Write files about the project for maintenance and those exploring change.
 
 ## [0.2.0] - 2025-05-10
 
