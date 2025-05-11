@@ -19,6 +19,9 @@ The \fBgit-coverage\fP program opens test coverage results uploaded to \fBcodeco
 Print these usage details.
 .IP "--branch"
 Fetch changes to inspect. Default: "main"
+.IP "--path"
+.nf
+Show a specific file. Default: "."
 .IP "--remote"
 Pick an upstream project. Default: "origin"
 .
@@ -43,6 +46,12 @@ The latest release of \fBgit\fP is recommended.
 .
 .IP "$ git coverage"
 Open test coverage results for the current project in a web browser.
+.
+.IP "$ git coverage --branch dev --path src/main.zig"
+Open test coverage results for a specific file on a certain branch.
+.
+.IP "$ git coverage --remote upstream"
+Open test coverage results for changes of some upstream repository.
 .
 .
 .SH REPORTING BUGS
