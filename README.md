@@ -7,7 +7,7 @@ Open test coverage uploaded to [`codecov`][codecov] in a web browser.
 The following command uses `git` details:
 
 ```sh
-$ git coverage  # https://app.codecov.io/gh/zimeg/git-coverage
+$ git coverage  # https://app.codecov.io/gh/zimeg/git-coverage/tree/main
 ```
 
 ### Flags
@@ -16,6 +16,7 @@ Options are available for customization:
 
 - `--help`: boolean. Print these usage details. Default: `false`
 - `--branch`: string. Fetch changes to inspect. Default: `main`
+- `--path`: string. Show a specific file. Default: `.`
 - `--remote`: string. Pick an upstream project. Default: `origin`
 
 ## Installation

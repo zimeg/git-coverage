@@ -3,12 +3,14 @@ const std = @import("std");
 const Flags = struct {
     help: bool,
     branch: []const u8,
+    path: []const u8,
     remote: []const u8,
 
     pub fn init(allocator: std.mem.Allocator) !Flags {
         var flags = Flags{
             .help = false,
             .branch = "main",
+            .path = ".",
             .remote = "origin",
         };
         var args = try std.process.argsWithAllocator(allocator);
@@ -21,6 +23,8 @@ const Flags = struct {
                     break;
                 } else if (std.mem.eql(u8, arg, "--branch")) {
                     flags.branch = try parse(&args);
+                } else if (std.mem.eql(u8, arg, "--path")) {
+                    flags.path = try parse(&args);
                 } else if (std.mem.eql(u8, arg, "--remote")) {
                     flags.remote = try parse(&args);
                 } else {
@@ -58,6 +62,7 @@ pub fn main() !void {
             \\
             \\    --help    boolean  print these usage details (default: false)
             \\    --branch  string   fetch changes to inspect  (default: "main")
+            \\    --path    string   show a specific file      (default: ".")
             \\    --remote  string   pick an upstream project  (default: "origin")
             \\
         , .{});
@@ -72,7 +77,7 @@ pub fn main() !void {
     }
     const remote = try origin(proc.stdout, flags.remote);
     const project = try repo(remote);
-    const url = try coverage(allocator, project, flags.branch);
+    const url = try coverage(allocator, project, flags.branch, flags.path);
     _ = std.process.Child.run(.{
         .allocator = allocator,
         .argv = &[_][]const u8{ "open", url },
@@ -165,24 +170,65 @@ test "repo ssh" {
     try std.testing.expectEqualStrings(project, "zimeg/git-coverage");
 }
 
-fn coverage(allocator: std.mem.Allocator, project: []const u8, branch: []const u8) ![]const u8 {
-    return std.fmt.allocPrint(
-        allocator,
-        "https://app.codecov.io/gh/{s}/tree/{s}",
-        .{ project, branch },
-    );
+fn coverage(allocator: std.mem.Allocator, project: []const u8, branch: []const u8, path: []const u8) ![]const u8 {
+    const slashes = std.mem.count(u8, path, "/");
+    const encoding = try allocator.alloc(u8, path.len + slashes * 2);
+    defer allocator.free(encoding);
+    _ = std.mem.replace(u8, path, "/", "%2F", encoding);
+    const stat = try std.fs.cwd().statFile(path);
+    switch (stat.kind) {
+        .directory => return std.fmt.allocPrint(
+            allocator,
+            "https://app.codecov.io/gh/{s}/tree/{s}/{s}",
+            .{ project, branch, encoding },
+        ),
+        .file => return std.fmt.allocPrint(
+            allocator,
+            "https://app.codecov.io/gh/{s}/blob/{s}/{s}",
+            .{ project, branch, encoding },
+        ),
+        else => return error.FileKindMissing,
+    }
 }
 
-test "coverage project main" {
+test "coverage project main root" {
     const project = "zimeg/git-coverage";
-    const url = try coverage(std.testing.allocator, project, "main");
+    const url = try coverage(std.testing.allocator, project, "main", ".");
     defer std.testing.allocator.free(url);
-    try std.testing.expectEqualStrings(url, "https://app.codecov.io/gh/zimeg/git-coverage/tree/main");
+    try std.testing.expectEqualStrings(url, "https://app.codecov.io/gh/zimeg/git-coverage/tree/main/.");
 }
 
-test "coverage project dev" {
+test "coverage project main dir" {
     const project = "zimeg/git-coverage";
-    const url = try coverage(std.testing.allocator, project, "dev");
+    const url = try coverage(std.testing.allocator, project, "main", "src");
     defer std.testing.allocator.free(url);
-    try std.testing.expectEqualStrings(url, "https://app.codecov.io/gh/zimeg/git-coverage/tree/dev");
+    try std.testing.expectEqualStrings(url, "https://app.codecov.io/gh/zimeg/git-coverage/tree/main/src");
+}
+
+test "coverage project main file" {
+    const project = "zimeg/git-coverage";
+    const url = try coverage(std.testing.allocator, project, "main", "src/main.zig");
+    defer std.testing.allocator.free(url);
+    try std.testing.expectEqualStrings(url, "https://app.codecov.io/gh/zimeg/git-coverage/blob/main/src%2Fmain.zig");
+}
+
+test "coverage project dev root" {
+    const project = "zimeg/git-coverage";
+    const url = try coverage(std.testing.allocator, project, "dev", ".");
+    defer std.testing.allocator.free(url);
+    try std.testing.expectEqualStrings(url, "https://app.codecov.io/gh/zimeg/git-coverage/tree/dev/.");
+}
+
+test "coverage project dev dir" {
+    const project = "zimeg/git-coverage";
+    const url = try coverage(std.testing.allocator, project, "dev", "src");
+    defer std.testing.allocator.free(url);
+    try std.testing.expectEqualStrings(url, "https://app.codecov.io/gh/zimeg/git-coverage/tree/dev/src");
+}
+
+test "coverage project dev file" {
+    const project = "zimeg/git-coverage";
+    const url = try coverage(std.testing.allocator, project, "dev", "src/main.zig");
+    defer std.testing.allocator.free(url);
+    try std.testing.expectEqualStrings(url, "https://app.codecov.io/gh/zimeg/git-coverage/blob/dev/src%2Fmain.zig");
 }

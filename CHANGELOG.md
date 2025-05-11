@@ -14,6 +14,7 @@ to [Semantic Versioning][semver].
 - Include installation instruction for moving a release download into path.
 - Pick an upstream project according to the saved git remotes using a flag.
 - Fetch the changes of a branch when showing coverage with a specific flag.
+- Jump to a specific path in the browser if the flag contains these detail.
 
 ### Maintenance
 
