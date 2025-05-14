@@ -152,22 +152,31 @@ fn repo(remote: []const u8) ![]const u8 {
     if (std.mem.startsWith(u8, remote, "https://github.com/")) {
         return remote[19 .. remote.len - 4];
     }
-    if (std.mem.startsWith(u8, remote, "git@github.com:")) {
-        return remote[15 .. remote.len - 4];
+    if (std.mem.containsAtLeast(u8, remote, 1, "@github.com:")) {
+        var splits = std.mem.splitScalar(u8, remote, ':');
+        _ = splits.first();
+        const project = splits.next().?;
+        return project[0 .. project.len - 4];
     }
     return error.GitProtocolMissing;
 }
 
-test "repo http" {
+test "repo http default" {
     const remote = "https://github.com/zimeg/git-coverage.git";
     const project = try repo(remote);
     try std.testing.expectEqualStrings(project, "zimeg/git-coverage");
 }
 
-test "repo ssh" {
+test "repo ssh user" {
     const remote = "git@github.com:zimeg/git-coverage.git";
     const project = try repo(remote);
     try std.testing.expectEqualStrings(project, "zimeg/git-coverage");
+}
+
+test "repo ssh org" {
+    const remote = "org-0123456@github.com:example/git-coverage.git";
+    const project = try repo(remote);
+    try std.testing.expectEqualStrings(project, "example/git-coverage");
 }
 
 fn coverage(allocator: std.mem.Allocator, project: []const u8, branch: []const u8, path: []const u8) ![]const u8 {

@@ -7,6 +7,10 @@ to [Semantic Versioning][semver].
 
 ## [Unreleased]
 
+### Fixed
+
+- Parse and split remotes for organizations using username with ssh starts.
+
 ### Maintenance
 
 - Limit the permission set to the minimum required for all action workflow.
