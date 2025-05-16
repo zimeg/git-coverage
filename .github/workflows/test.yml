@@ -20,7 +20,7 @@ jobs:
           nix develop -c zig fmt --check ./src/**/*.zig
           nix develop -c zig build test -Dcoverage
       - name: Upload reports
-        uses: codecov/codecov-action@v5.4.2
+        uses: codecov/codecov-action@v5.4.3
         with:
           fail_ci_if_error: true
           token: ${{ secrets.CODECOV_TOKEN }}
