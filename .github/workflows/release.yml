@@ -13,11 +13,12 @@ jobs:
       packages: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
+          persist-credentials: false
       - name: Install a flaked Nix
-        uses: DeterminateSystems/nix-installer-action@v17
+        uses: DeterminateSystems/nix-installer-action@21a544727d0c62386e78b4befe52d19ad12692e3 # v17
       - name: Publish artifacts
         run: |
           nix develop -c goreleaser release --clean
@@ -25,8 +26,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Include documentation
         run: |
-          TAG="${{ github.ref_name }}"
           VERSION="${TAG#v}"
           gh release upload "$TAG" man/git-coverage.1#git-coverage_"$VERSION"_man.1
         env:
           GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
