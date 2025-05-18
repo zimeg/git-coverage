@@ -10,6 +10,7 @@ to [Semantic Versioning][semver].
 ### Maintenance
 
 - Use minimum sets of permission and pinned external workflow step actions.
+- Keep dependencies up to date using latest versions with automation magic.
 
 ## [0.2.1] - 2025-05-13
 
