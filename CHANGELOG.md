@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog][changelog], and this project adheres
 to [Semantic Versioning][semver].
 
+## [Unreleased]
+
+### Maintenance
+
+- Use minimum sets of permission and pinned external workflow step actions.
+
 ## [0.2.1] - 2025-05-13
 
 ### Fixed
