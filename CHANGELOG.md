@@ -7,6 +7,10 @@ to [Semantic Versioning][semver].
 
 ## [Unreleased]
 
+### Fixed
+
+- Find the actual path for nested or relative directories provided to path.
+
 ### Maintenance
 
 - Use minimum sets of permission and pinned external workflow step actions.

@@ -179,11 +179,50 @@ test "repo ssh org" {
     try std.testing.expectEqualStrings(project, "example/git-coverage");
 }
 
+fn relative(allocator: std.mem.Allocator, path: []const u8) ![]const u8 {
+    const git = try std.process.Child.run(.{
+        .allocator = allocator,
+        .argv = &.{ "git", "rev-parse", "--show-toplevel" },
+    });
+    const root = std.mem.trimRight(u8, git.stdout, "\n");
+    const cwd = try std.fs.cwd().realpathAlloc(allocator, path);
+    const realpath = try std.process.Child.run(.{
+        .allocator = allocator,
+        .argv = &.{ "realpath", "--relative-to", root, cwd },
+    });
+    return std.mem.trimRight(u8, realpath.stdout, "\n");
+}
+
+test "relative cwd" {
+    var aa = std.heap.ArenaAllocator.init(std.testing.allocator);
+    defer aa.deinit();
+    const path = ".";
+    const full = try relative(aa.allocator(), path);
+    try std.testing.expectEqualStrings(full, ".");
+}
+
+test "relative dir" {
+    var aa = std.heap.ArenaAllocator.init(std.testing.allocator);
+    defer aa.deinit();
+    const path = ".././git-coverage/";
+    const full = try relative(aa.allocator(), path);
+    try std.testing.expectEqualStrings(full, ".");
+}
+
+test "relative file" {
+    var aa = std.heap.ArenaAllocator.init(std.testing.allocator);
+    defer aa.deinit();
+    const path = "././src/.././README.md";
+    const full = try relative(aa.allocator(), path);
+    try std.testing.expectEqualStrings(full, "README.md");
+}
+
 fn coverage(allocator: std.mem.Allocator, project: []const u8, branch: []const u8, path: []const u8) ![]const u8 {
-    const slashes = std.mem.count(u8, path, "/");
-    const encoding = try allocator.alloc(u8, path.len + slashes * 2);
+    const fullpath = try relative(allocator, path);
+    const slashes = std.mem.count(u8, fullpath, "/");
+    const encoding = try allocator.alloc(u8, fullpath.len + slashes * 2);
     defer allocator.free(encoding);
-    _ = std.mem.replace(u8, path, "/", "%2F", encoding);
+    _ = std.mem.replace(u8, fullpath, "/", "%2F", encoding);
     const stat = try std.fs.cwd().statFile(path);
     switch (stat.kind) {
         .directory => return std.fmt.allocPrint(
@@ -201,43 +240,49 @@ fn coverage(allocator: std.mem.Allocator, project: []const u8, branch: []const u
 }
 
 test "coverage project main root" {
+    var aa = std.heap.ArenaAllocator.init(std.testing.allocator);
+    defer aa.deinit();
     const project = "zimeg/git-coverage";
-    const url = try coverage(std.testing.allocator, project, "main", ".");
-    defer std.testing.allocator.free(url);
+    const url = try coverage(aa.allocator(), project, "main", ".");
     try std.testing.expectEqualStrings(url, "https://app.codecov.io/gh/zimeg/git-coverage/tree/main/.");
 }
 
 test "coverage project main dir" {
+    var aa = std.heap.ArenaAllocator.init(std.testing.allocator);
+    defer aa.deinit();
     const project = "zimeg/git-coverage";
-    const url = try coverage(std.testing.allocator, project, "main", "src");
-    defer std.testing.allocator.free(url);
+    const url = try coverage(aa.allocator(), project, "main", "./src");
     try std.testing.expectEqualStrings(url, "https://app.codecov.io/gh/zimeg/git-coverage/tree/main/src");
 }
 
 test "coverage project main file" {
+    var aa = std.heap.ArenaAllocator.init(std.testing.allocator);
+    defer aa.deinit();
     const project = "zimeg/git-coverage";
-    const url = try coverage(std.testing.allocator, project, "main", "src/main.zig");
-    defer std.testing.allocator.free(url);
+    const url = try coverage(aa.allocator(), project, "main", "./src/main.zig");
     try std.testing.expectEqualStrings(url, "https://app.codecov.io/gh/zimeg/git-coverage/blob/main/src%2Fmain.zig");
 }
 
 test "coverage project dev root" {
+    var aa = std.heap.ArenaAllocator.init(std.testing.allocator);
+    defer aa.deinit();
     const project = "zimeg/git-coverage";
-    const url = try coverage(std.testing.allocator, project, "dev", ".");
-    defer std.testing.allocator.free(url);
+    const url = try coverage(aa.allocator(), project, "dev", ".");
     try std.testing.expectEqualStrings(url, "https://app.codecov.io/gh/zimeg/git-coverage/tree/dev/.");
 }
 
 test "coverage project dev dir" {
+    var aa = std.heap.ArenaAllocator.init(std.testing.allocator);
+    defer aa.deinit();
     const project = "zimeg/git-coverage";
-    const url = try coverage(std.testing.allocator, project, "dev", "src");
-    defer std.testing.allocator.free(url);
+    const url = try coverage(aa.allocator(), project, "dev", "./src");
     try std.testing.expectEqualStrings(url, "https://app.codecov.io/gh/zimeg/git-coverage/tree/dev/src");
 }
 
 test "coverage project dev file" {
+    var aa = std.heap.ArenaAllocator.init(std.testing.allocator);
+    defer aa.deinit();
     const project = "zimeg/git-coverage";
-    const url = try coverage(std.testing.allocator, project, "dev", "src/main.zig");
-    defer std.testing.allocator.free(url);
+    const url = try coverage(aa.allocator(), project, "dev", "./src/main.zig");
     try std.testing.expectEqualStrings(url, "https://app.codecov.io/gh/zimeg/git-coverage/blob/dev/src%2Fmain.zig");
 }
