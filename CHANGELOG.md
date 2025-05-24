@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog][changelog], and this project adheres
 to [Semantic Versioning][semver].
 
+## [Unreleased]
+
+### Maintenance
+
+- Remove additional utilities from flake packaging for small installations.
+
 ## [0.2.2] - 2025-05-23
 
 ### Fixed
