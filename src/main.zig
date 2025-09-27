@@ -52,7 +52,7 @@ pub fn main() !void {
     var aa = std.heap.ArenaAllocator.init(gpa.allocator());
     defer aa.deinit();
     const allocator = aa.allocator();
-    const writer = std.io.getStdOut().writer();
+    const writer = std.io.stdout.writer();
     const flags = try Flags.init(allocator);
     if (flags.help) {
         try writer.print(
