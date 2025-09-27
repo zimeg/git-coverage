@@ -20,6 +20,7 @@ jobs:
         run: |
           shopt -s globstar
           nix develop -c zig fmt --check ./src/**/*.zig
+          nix develop -c zig build
           nix develop -c zig build test -Dcoverage
       - name: Upload reports
         uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 # v5.5.1
