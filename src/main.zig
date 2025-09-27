@@ -52,10 +52,10 @@ pub fn main() !void {
     var aa = std.heap.ArenaAllocator.init(gpa.allocator());
     defer aa.deinit();
     const allocator = aa.allocator();
-    const writer = std.io.getStdOut().writer();
+    const writer = std.fs.File.stdout();
     const flags = try Flags.init(allocator);
     if (flags.help) {
-        try writer.print(
+        _ = try writer.write(
             \\usage: git coverage [options]
             \\
             \\Open test coverage uploaded to codecov in a web browser.
@@ -65,7 +65,7 @@ pub fn main() !void {
             \\    --path    string   show a specific file      (default: ".")
             \\    --remote  string   pick an upstream project  (default: "origin")
             \\
-        , .{});
+        );
         return;
     }
     const proc = try std.process.Child.run(.{
@@ -82,7 +82,8 @@ pub fn main() !void {
         .allocator = allocator,
         .argv = &[_][]const u8{ "open", url },
     }) catch {
-        try writer.print("{s}\n", .{url});
+        const output = try std.fmt.allocPrint(allocator, "{s}\n", .{url});
+        _ = try writer.write(output);
     };
 }
 
