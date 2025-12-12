@@ -11,6 +11,7 @@ to [Semantic Versioning][semver].
 
 - Remove additional utilities from flake packaging for small installations.
 - Write to standard output file descriptors using zig string format method.
+- Attempt updates for build dependencies at somewhat random timing testing.
 
 ## [0.2.2] - 2025-05-23
 

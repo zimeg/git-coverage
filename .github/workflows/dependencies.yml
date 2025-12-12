@@ -3,7 +3,7 @@ name: Update dependencies
 on:
   pull_request:
   schedule:
-    - cron: "11 11 * * *"
+    - cron: "41 14 * * *"
   workflow_dispatch:
 jobs:
   dependabot:
