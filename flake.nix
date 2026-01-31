@@ -29,6 +29,10 @@
               kcov # https://github.com/SimonKagstrom/kcov
               pkgs.zig # https://github.com/ziglang/zig
             ];
+            shellHook = ''
+              export ZIG_GLOBAL_CACHE_DIR="$PWD/.zig-cache"
+              mkdir -p "$ZIG_GLOBAL_CACHE_DIR"
+            '';
           };
         }
       );

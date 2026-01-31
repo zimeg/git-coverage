@@ -13,6 +13,7 @@ to [Semantic Versioning][semver].
 - Write to standard output file descriptors using zig string format method.
 - Attempt updates for build dependencies at somewhat random timing testing.
 - Overwrite failed attempts to update dependencies with retries as alright.
+- Export cache of build dependencies to the current working delevelopments.
 
 ## [0.2.2] - 2025-05-23
 
