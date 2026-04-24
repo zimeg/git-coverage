@@ -14,6 +14,7 @@ to [Semantic Versioning][semver].
 - Attempt updates for build dependencies at somewhat random timing testing.
 - Overwrite failed attempts to update dependencies with retries as alright.
 - Export cache of build dependencies to the current working delevelopments.
+- Pin Zig 0.15 in the flake so automated nixpkgs updates stay buildable.
 
 ## [0.2.2] - 2025-05-23
 

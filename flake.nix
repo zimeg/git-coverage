@@ -20,6 +20,7 @@
         pkgs:
         let
           kcov = if pkgs.stdenv.isLinux then pkgs.kcov else null;
+          zig = pkgs.zig_0_15;
         in
         {
           default = pkgs.mkShell {
@@ -27,7 +28,7 @@
               pkgs.git # https://github.com/git/git
               pkgs.goreleaser # https://github.com/goreleaser/goreleaser
               kcov # https://github.com/SimonKagstrom/kcov
-              pkgs.zig # https://github.com/ziglang/zig
+              zig # https://github.com/ziglang/zig
             ];
             shellHook = ''
               export ZIG_GLOBAL_CACHE_DIR="$PWD/.zig-cache"
@@ -43,7 +44,7 @@
           src = ./.;
           nativeBuildInputs = [
             pkgs.installShellFiles
-            pkgs.zig.hook
+            pkgs.zig_0_15.hook
           ];
           zigBuildFlags = [ "-Doptimize=ReleaseSmall" ];
           installPhase = ''
