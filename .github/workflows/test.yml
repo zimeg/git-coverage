@@ -20,10 +20,13 @@ jobs:
           nix develop -c zig fmt --check ./src/**/*.zig
           nix develop -c zig build
           nix develop -c zig build test -Dcoverage
+      - name: Locate the codecov binary
+        id: codecov
+        run: echo "binary=$(command -v codecovcli)" >> "$GITHUB_OUTPUT"
       - name: Upload reports
         uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
         with:
-          binary: codecovcli
+          binary: ${{ steps.codecov.outputs.binary }}
           fail_ci_if_error: true
           override_commit: ${{ github.sha }}
           override_slug: ${{ github.repository }}
