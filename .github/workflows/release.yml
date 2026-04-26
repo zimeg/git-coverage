@@ -7,7 +7,7 @@ on:
 jobs:
   release:
     name: Upload
-    runs-on: self-hosted
+    runs-on: tom
     permissions:
       contents: write
       packages: write

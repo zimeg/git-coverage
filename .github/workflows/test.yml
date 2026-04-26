@@ -6,7 +6,7 @@ on:
 jobs:
   test:
     name: Report
-    runs-on: self-hosted
+    runs-on: tom
     permissions:
       contents: read
     steps:
