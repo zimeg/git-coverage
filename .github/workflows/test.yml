@@ -20,7 +20,7 @@ jobs:
           nix develop -c zig fmt --check ./src/**/*.zig
           nix develop -c zig build
           nix develop -c zig build test -Dcoverage
-      - name: Locate the codecov binary
+      - name: Locate Codecov
         id: codecov
         run: echo "binary=$(command -v codecovcli)" >> "$GITHUB_OUTPUT"
       - name: Upload reports
