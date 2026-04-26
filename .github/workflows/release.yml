@@ -7,7 +7,7 @@ on:
 jobs:
   release:
     name: Upload
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: write
       packages: write
@@ -17,8 +17,6 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - name: Install a flaked Nix
-        uses: DeterminateSystems/nix-installer-action@c5a866b6ab867e88becbed4467b93592bce69f8a # v21
       - name: Publish artifacts
         run: |
           nix develop -c goreleaser release --clean
