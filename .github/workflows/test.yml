@@ -29,6 +29,6 @@ jobs:
           binary: ${{ steps.codecov.outputs.binary }}
           fail_ci_if_error: true
           override_commit: ${{ github.sha }}
-          override_slug: ${{ github.repository }}
+          slug: ${{ github.repository }}
           token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
