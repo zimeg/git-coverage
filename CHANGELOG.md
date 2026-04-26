@@ -8,6 +8,7 @@ to [Semantic Versioning][semver].
 ## [Unreleased]
 
 ### Maintenance
+- Migrate nix dependent workflows to use self hosted runner machines.
 
 - Remove additional utilities from flake packaging for small installations.
 - Write to standard output file descriptors using zig string format method.
