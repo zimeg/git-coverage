@@ -28,5 +28,6 @@ jobs:
         with:
           binary: ${{ env.CC_BINARY }}
           fail_ci_if_error: true
+          override_commit: ${{ github.sha }}
           token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
