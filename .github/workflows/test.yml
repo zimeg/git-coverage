@@ -22,7 +22,7 @@ jobs:
           nix develop -c zig build test -Dcoverage
       - name: Locate the codecov binary
         id: codecov
-        run: echo "binary=$(nix build nixpkgs#codecov-cli --no-link --print-out-paths)/bin/codecovcli" >> "$GITHUB_OUTPUT"
+        run: echo "binary=$(which codecovcli)" >> "$GITHUB_OUTPUT"
       - name: Upload reports
         uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
         with:
