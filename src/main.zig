@@ -6,14 +6,14 @@ const Flags = struct {
     path: []const u8,
     remote: []const u8,
 
-    pub fn init(args_input: std.process.Args, allocator: std.mem.Allocator) !Flags {
+    pub fn init(inputs: std.process.Args, allocator: std.mem.Allocator) !Flags {
         var flags = Flags{
             .help = false,
             .branch = "main",
             .path = ".",
             .remote = "origin",
         };
-        var args = try std.process.Args.Iterator.initAllocator(args_input, allocator);
+        var args = try std.process.Args.Iterator.initAllocator(inputs, allocator);
         defer args.deinit();
         _ = args.next();
         while (true) {
