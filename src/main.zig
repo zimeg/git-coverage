@@ -50,9 +50,9 @@ const Flags = struct {
 
 pub fn main(init: std.process.Init) !void {
     const allocator = init.arena.allocator();
-    var stdout_buffer: [1024]u8 = undefined;
-    var stdout_writer = std.Io.File.stdout().writer(init.io, &stdout_buffer);
-    const stdout = &stdout_writer.interface;
+    var buffer: [1024]u8 = undefined;
+    var writer = std.Io.File.stdout().writer(init.io, &buffer);
+    const stdout = &writer.interface;
     const flags = try Flags.init(init.minimal.args, allocator);
     if (flags.help) {
         try stdout.writeAll(
