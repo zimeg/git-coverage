@@ -16,6 +16,7 @@ to [Semantic Versioning][semver].
 - Export cache of build dependencies to the current working delevelopments.
 - Prefer common self hosted nix package management workflow runner machine.
 - Update allocation and output for latest dependencies injected preference.
+- Test updates inline to avoid overhead of multiple pending runner at once.
 
 ## [0.2.2] - 2025-05-23
 
