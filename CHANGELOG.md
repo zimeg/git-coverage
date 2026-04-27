@@ -14,8 +14,9 @@ to [Semantic Versioning][semver].
 - Attempt updates for build dependencies at somewhat random timing testing.
 - Overwrite failed attempts to update dependencies with retries as alright.
 - Export cache of build dependencies to the current working delevelopments.
-- Update the allocator setup so automated nixpkgs updates keep building on newer Zig.
 - Prefer common self hosted nix package management workflow runner machine.
+  Update allocation and output for latest dependencies injected preference.
+
 
 ## [0.2.2] - 2025-05-23
 
