@@ -17,6 +17,7 @@ to [Semantic Versioning][semver].
 - Prefer common self hosted nix package management workflow runner machine.
 - Update allocation and output for latest dependencies injected preference.
 - Test updates inline to avoid overhead of multiple pending runner at once.
+- Adapt build and coverage commands for Zig 0.17 with executed line checks.
 
 ## [0.2.2] - 2025-05-23
 

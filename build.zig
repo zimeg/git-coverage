@@ -17,24 +17,24 @@ pub fn build(b: *std.Build) void {
     const run_step = b.step("run", "Run the command");
     const run_cmd = b.addRunArtifact(exe);
     run_cmd.step.dependOn(b.getInstallStep());
-    if (b.args) |args| {
-        run_cmd.addArgs(args);
-    }
+    run_cmd.addPassthruArgs();
     run_step.dependOn(&run_cmd.step);
 
     const test_step = b.step("test", "Run unit tests");
     const coverage = b.option(bool, "coverage", "Generate coverage") orelse false;
     const exe_unit_tests = b.addTest(.{
         .root_module = exe_mod,
+        // kcov needs the DWARF debug info emitted by LLVM.
+        .use_llvm = if (coverage) true else null,
     });
-    if (coverage) {
-        exe_unit_tests.setExecCmd(&[_]?[]const u8{
+    const run_exe_unit_tests = if (coverage) blk: {
+        const run = b.addSystemCommand(&.{
             "kcov",
             "--exclude-pattern=/nix/store",
             "kcov-output",
-            null,
         });
-    }
-    const run_exe_unit_tests = b.addRunArtifact(exe_unit_tests);
+        run.addArtifactArg(exe_unit_tests);
+        break :blk run;
+    } else b.addRunArtifact(exe_unit_tests);
     test_step.dependOn(&run_exe_unit_tests.step);
 }
