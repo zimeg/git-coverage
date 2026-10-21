@@ -19,7 +19,17 @@ jobs:
           shopt -s globstar
           nix develop -c zig fmt --check ./src/**/*.zig
           nix develop -c zig build
+          help="$(nix develop -c zig build run -- --help)"
+          [[ "$help" == "usage: git coverage [options]"* ]]
+          rm -rf kcov-output
           nix develop -c zig build test -Dcoverage
+      - name: Verify coverage contains executed lines
+        run: |
+          for report in kcov-output/*/cobertura.xml; do
+            coverage="$(<"$report")"
+            [[ "$coverage" =~ lines-valid=\"[1-9][0-9]*\" ]]
+            [[ "$coverage" =~ lines-covered=\"[1-9][0-9]*\" ]]
+          done
       - name: Locate Codecov
         id: codecov
         run: echo "binary=$(command -v codecovcli)" >> "$GITHUB_OUTPUT"
