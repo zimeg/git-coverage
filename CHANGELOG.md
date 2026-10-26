@@ -7,9 +7,11 @@ to [Semantic Versioning][semver].
 
 ## [Unreleased]
 
+### Build
+
+
 ### Maintenance
 
-- Check the host platform when enabling Linux coverage tools in nix shells.
 - Remove additional utilities from flake packaging for small installations.
 - Write to standard output file descriptors using zig string format method.
 - Attempt updates for build dependencies at somewhat random timing testing.
@@ -20,6 +22,7 @@ to [Semantic Versioning][semver].
 - Test updates inline to avoid overhead of multiple pending runner at once.
 - Adapt build commands for latest runtime with tests added for an argument.
 - Restore executed line coverage using llvm debug details for test outputs.
+- Check host platform to toggle a test coverage tooling when running nixos.
 
 ## [0.2.2] - 2025-05-23
 
