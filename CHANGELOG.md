@@ -7,6 +7,10 @@ to [Semantic Versioning][semver].
 
 ## [Unreleased]
 
+### Fixed
+
+- Restore executed line coverage using LLVM debug information for tracing.
+
 ### Maintenance
 
 - Remove additional utilities from flake packaging for small installations.
