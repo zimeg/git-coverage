@@ -9,6 +9,7 @@ to [Semantic Versioning][semver].
 
 ### Maintenance
 
+- Check the host platform when enabling Linux coverage tools in nix shells.
 - Remove additional utilities from flake packaging for small installations.
 - Write to standard output file descriptors using zig string format method.
 - Attempt updates for build dependencies at somewhat random timing testing.

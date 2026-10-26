@@ -19,7 +19,7 @@
       devShells = each (
         pkgs:
         let
-          kcov = if pkgs.stdenv.isLinux then pkgs.kcov else null;
+          kcov = if pkgs.stdenv.hostPlatform.isLinux then pkgs.kcov else null;
         in
         {
           default = pkgs.mkShell {
