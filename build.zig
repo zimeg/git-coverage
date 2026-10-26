@@ -24,8 +24,6 @@ pub fn build(b: *std.Build) void {
     const coverage = b.option(bool, "coverage", "Generate coverage") orelse false;
     const exe_unit_tests = b.addTest(.{
         .root_module = exe_mod,
-        // kcov needs the DWARF debug info emitted by LLVM.
-        .use_llvm = if (coverage) true else null,
     });
     const run_exe_unit_tests = if (coverage) blk: {
         const run = b.addSystemCommand(&.{
