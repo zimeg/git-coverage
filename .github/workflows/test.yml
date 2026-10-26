@@ -19,6 +19,9 @@ jobs:
           shopt -s globstar
           nix develop -c zig fmt --check ./src/**/*.zig
           nix develop -c zig build
+          OUTPUT="$(nix develop -c zig build run -- --help)"
+          [[ "$OUTPUT" == "usage: git coverage [options]"* ]]
+          rm -rf kcov-output
           nix develop -c zig build test -Dcoverage
       - name: Locate Codecov
         id: codecov
