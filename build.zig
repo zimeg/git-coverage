@@ -24,6 +24,7 @@ pub fn build(b: *std.Build) void {
     const coverage = b.option(bool, "coverage", "Generate coverage") orelse false;
     const exe_unit_tests = b.addTest(.{
         .root_module = exe_mod,
+        .use_llvm = if (coverage) true else null,
     });
     if (coverage) {
         const run = b.addSystemCommand(&.{
