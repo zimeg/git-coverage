@@ -19,6 +19,7 @@ to [Semantic Versioning][semver].
 - Test updates inline to avoid overhead of multiple pending runner at once.
 - Adapt build commands for latest runtime with tests added for an argument.
 - Restore executed line coverage using llvm debug details for test outputs.
+- Check host platform to toggle a test coverage tooling when running nixos.
 
 ## [0.2.2] - 2025-05-23
 
