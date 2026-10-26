@@ -7,10 +7,6 @@ to [Semantic Versioning][semver].
 
 ## [Unreleased]
 
-### Fixed
-
-- Restore executed line coverage using LLVM debug information for tracing.
-
 ### Maintenance
 
 - Remove additional utilities from flake packaging for small installations.
@@ -22,6 +18,7 @@ to [Semantic Versioning][semver].
 - Update allocation and output for latest dependencies injected preference.
 - Test updates inline to avoid overhead of multiple pending runner at once.
 - Adapt build commands for latest runtime with tests added for an argument.
+- Restore executed line coverage using LLVM debug information for tracing.
 
 ## [0.2.2] - 2025-05-23
 
