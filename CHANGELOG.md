@@ -7,9 +7,6 @@ to [Semantic Versioning][semver].
 
 ## [Unreleased]
 
-### Build
-
-
 ### Maintenance
 
 - Remove additional utilities from flake packaging for small installations.
