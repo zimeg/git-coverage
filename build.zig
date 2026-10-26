@@ -27,14 +27,16 @@ pub fn build(b: *std.Build) void {
         // kcov needs the DWARF debug info emitted by LLVM.
         .use_llvm = if (coverage) true else null,
     });
-    const run_exe_unit_tests = if (coverage) blk: {
+    if (coverage) {
         const run = b.addSystemCommand(&.{
             "kcov",
             "--exclude-pattern=/nix/store",
             "kcov-output",
         });
         run.addArtifactArg(exe_unit_tests);
-        break :blk run;
-    } else b.addRunArtifact(exe_unit_tests);
-    test_step.dependOn(&run_exe_unit_tests.step);
+        test_step.dependOn(&run.step);
+    } else {
+        const run = b.addRunArtifact(exe_unit_tests);
+        test_step.dependOn(&run.step);
+    }
 }
